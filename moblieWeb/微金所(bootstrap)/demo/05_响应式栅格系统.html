@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,
+user-scalable=0,minimal-ui">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+
+    <style>
+
+        .container {
+            height: 100px;
+            background: pink;
+        }
+
+        .container .row {
+            height: 50px;
+            background: green;
+        }
+
+        .container > .myRow {
+            height: 50px;
+            background-color: #1bd3da;
+        }
+
+        .container > .row > div {
+            height: 25px;
+            border: 1px solid #cccccc;
+        }
+
+    </style>
+</head>
+<body>
+
+<!--
+大屏设备:让div平均分为6等分
+中屏设备:4等分
+小屏幕:3等分
+超小屏幕:2等分
+
+
+
+
+
+-->
+
+
+<div class="container">
+
+    <div class="row">
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6"></div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6"></div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6"></div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6"></div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6"></div>
+        <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6"></div>
+    </div>
+
+
+</div>
+
+
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <style>
+
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        ul, li {
+            list-style: none;
+        }
+
+        img {
+            display: block;
+        }
+
+        /**
+        下面是实际的工程实现
+         */
+
+        .container {
+            min-width: 320px;
+            max-height: 640px;
+            margin: 0 auto;
+            width: 100%;
+            background: pink;
+        }
+
+        .container .head {
+            width: 100%;
+            height: 40px;
+            position: fixed;
+        }
+
+        .head .head-box {
+            background: rgba(201, 21, 35, 0.85);
+            height: 40px;
+            min-width: 320px;
+            max-width: 640px;
+            width: 100%;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .container .banner {
+        }
+
+        .container .nav {
+        }
+
+        .container .products {
+
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <!--头部的搜索框-->
+    <header class="head">
+        <div class="head-box">
+            <a href="#">京东</a>
+            <div>
+                <input type="search" placeholder="搜索">
+            </div>
+        </div>
+    </header>
+
+    <!--中间的banner-->
+    <div class="banner"></div>
+
+    <!--导航的实现-->
+    <div class="nav"></div>
+
+
+    <!--产品展示界面的实现-->
+    <div class="products">
+        <div class="display"></div>
+        <div class="display"></div>
+        <div class="display"></div>
+        <div class="display"></div>
+    </div>
+
+</div>
+
+
+</body>
+</html>

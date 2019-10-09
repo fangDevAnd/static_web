@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box {
+            width: 200px;
+            height: 200px;
+            background: pink;
+            float: left;
+        }
+
+
+    </style>
+
+</head>
+<body>
+<div class="box"></div>
+
+<!--
+    1.taps事件    轻击 轻触(响应速度块)
+    2.移动端也有click事件(在移动端为了区分滑动还是点击,click点击延迟300ms)
+    3.影响用户体验,响应太慢,
+    4.解决方案:
+    使用tap事件(但不是向移动端原生事件,通过touch相关事件衍生过来的)(zepto.js tap事件)了解其原理
+    使用一个fastclick.js插件
+
+-->
+<script src="https://cdn.bootcss.com/fastclick/1.0.6/fastclick.js"></script>
+<script>
+
+    /**
+     * 当页面的DOM元素加载完成
+     */
+    document.addEventListener("DOMContentLoaded", function () {
+        /**
+         * 初始化方法
+         */
+        FastClick.attach(document.body)
+    })
+
+    /**
+     * 下面正常使用click就可以了
+     */
+
+</script>
+
+
+<!--下面使用的是自己通过封装实现的快速的click-->
+<script>
+
+    window.onload = function () {
+        /**
+         * 使用tap事件
+         */
+        /**
+         * 1.响应速度比click要快 15oms
+         * 2,不能滑动
+         */
+        var bindTapEvent = function (dom, callback) {
+            /**
+             * 事件的执行顺序
+             * 如果没有移动 touchstart--->touchend--->click
+             * 如果有移动  touchstart---->touchmove---->touchend
+             * 上面可以看出click是在没有move事件的情况下触发的
+             */
+            /**
+             * 在谷歌浏览器模拟看不到300ms的效果,只能在真机上面才能看到延时效果
+             */
+            var startTime = 0
+            var isMove = false
+            dom.addEventListener("touchstart", function (e) {
+                startTime = Date.now()
+            })
+            dom.addEventListener("touchmove", function (e) {
+                isMove = true
+            })
+            dom.addEventListener("touchend", function (e) {
+                if ((Date.now() - startTime) < 150 && !isMove) {
+                    callback && callback.call(this, e)
+                }
+                //重置
+                isMove = false
+                startTime = 0
+            })
+            dom.addEventListener("click", function (e) {
+
+            })
+
+        }
+        bindTapEvent(document.querySelector(".box"), function (e) {
+            //tap事件 ,提高移动端click响应速度
+        });
+    }
+
+
+</script>
+</body>
+</html>

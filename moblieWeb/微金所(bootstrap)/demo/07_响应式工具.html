@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale-1,user-scalable=no">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Title</title>
+    <script src="js/jquery-3.3.1.min.js"></script>
+    <!--<script rel="script" src="js/bootstrap.min.js"></script>-->
+    <!--<link type="text/css" rel="stylesheet" href="css/bootstrap.min.css">-->
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- 可选的 Bootstrap 主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous"></script>
+    <style>
+
+        .container {
+            height: 100px;
+            background: pink;
+        }
+
+        .container .row {
+            height: 50px;
+            background: green;
+        }
+
+        .container > .myRow {
+            height: 50px;
+            background-color: #1bd3da;
+        }
+
+        .container > .row > div {
+            height: 25px;
+            border: 1px solid #cccccc;
+        }
+
+        .container > .row > div > .row div {
+            height: 10px;
+            border: 1px solid red;
+        }
+
+    </style>
+</head>
+<body>
+
+<!--
+大屏设备:显示
+中屏设备:隐藏
+小屏幕:显示
+超小屏幕:隐藏
+-->
+
+
+<div class="box visible-lg visible-md visible-sm visible-xs">
+    内容
+</div>
+
+</body>
+</html>

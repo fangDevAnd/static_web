@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,
+user-scalable=0,minimal-ui">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+
+
+    <style>
+
+        .container {
+            height: 100px;
+            background: pink;
+        }
+
+        .container .row {
+            height: 50px;
+            background: green;
+        }
+
+        .container > .myRow {
+            height: 50px;
+            background-color: #1bd3da;
+        }
+
+        .container > .row > div {
+            height: 25px;
+            border: 1px solid #cccccc;
+        }
+
+    </style>
+</head>
+<body>
+
+<!--响应式布局容器
+
+
+.container默认有15px的左右内间距
+.row填充父容器的15px左右内边距 使用margin-left,margin-right设置了-15px,相当于拉伸
+-->
+
+<div class="container">
+
+    <div class="row">
+        <!--列   col-*-*  *:不确定 (参数)  -->
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4"></div>
+    </div>
+
+    <!--<div class="myRow"></div>-->
+
+
+</div>
+
+
+<script src="../js/jquery-3.3.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+</body>
+</html>
