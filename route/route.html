@@ -92,7 +92,7 @@
 
         // 当用户点击前进后退按钮时触发函数
         window.addEventListener('popstate', function () {
-            console.log('history.state.path:', history.state.path);
+            console.log('historyMsg.vue.state.path:', history.state.path);
             self.currentRoute = history.state.path;
             self.refresh(self.currentRoute, 2);
         }, false);

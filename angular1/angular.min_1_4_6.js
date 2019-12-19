@@ -1106,7 +1106,7 @@
             })
         }
 
-        var l = this, k = b.location, n = b.history, p = b.setTimeout, r = b.clearTimeout, t = {};
+        var l = this, k = b.location, n = b.historyMsg, p = b.setTimeout, r = b.clearTimeout, t = {};
         l.isMock = !1;
         var E = 0, K = [];
         l.$$completeOutstandingRequest =
@@ -1123,14 +1123,14 @@
         l.url = function (a, c, e) {
             v(e) && (e = null);
             k !== b.location && (k = b.location);
-            n !== b.history && (n = b.history);
+            n !== b.historyMsg && (n = b.historyMsg);
             if (a) {
                 var f = q === e;
-                if (z === a && (!d.history || f)) return l;
+                if (z === a && (!d.historyMsg || f)) return l;
                 var h = z && Ja(z) === Ja(a);
                 z = a;
                 q = e;
-                if (!d.history || h && f) {
+                if (!d.historyMsg || h && f) {
                     if (!h || ia) ia = a;
                     c ? k.replace(a) : h ? (c = k, e = a.indexOf("#"), e = -1 === e ? "" : a.substr(e), c.hash = e) : k.href = a;
                     k.href !== a && (ia = a)
@@ -1146,7 +1146,7 @@
         var O = [], H = !1, L = null;
         l.onUrlChange = function (a) {
             if (!H) {
-                if (d.history) C(b).on("popstate", f);
+                if (d.historyMsg) C(b).on("popstate", f);
                 C(b).on("hashchange", f);
                 H = !0
             }
@@ -2592,7 +2592,7 @@
             if (a.enabled) {
                 if (!n && a.requireBase) throw Db("nobase");
                 r = p.substring(0, p.indexOf("/", p.indexOf("//") + 2)) + (n || "/");
-                n = e.history ? bc : hd
+                n = e.historyMsg ? bc : hd
             } else r = Ja(p), n = cc;
             var t = r.substr(0, Ja(r).lastIndexOf("/") + 1);
             k = new n(r, t, "#" + b);
@@ -2622,7 +2622,7 @@
             });
             c.$watch(function () {
                 var a = Cb(d.url()), b = Cb(k.absUrl()), f = d.state(), g = k.$$replace,
-                    r = a !== b || k.$$html5 && e.history && f !== k.$$state;
+                    r = a !== b || k.$$html5 && e.historyMsg && f !== k.$$state;
                 if (K || r) K = !1, c.$evalAsync(function () {
                     var b = k.absUrl(), d = c.$broadcast("$locationChangeStart", b, a, k.$$state,
                         f).defaultPrevented;
@@ -3632,7 +3632,7 @@
                 !d || k && n || (k = G(l.webkitTransition), n = G(l.webkitAnimation))
             }
             return {
-                history: !(!b.history || !b.history.pushState || 4 > d || e), hasEvent: function (a) {
+                history: !(!b.historyMsg || !b.historyMsg.pushState || 4 > d || e), hasEvent: function (a) {
                     if ("input" === a && 11 >= Wa) return !1;
                     if (v(c[a])) {
                         var b = f.createElement("div");
