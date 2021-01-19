@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>移动端上传图片解决方法</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <style>
+        .input-div {
+            position: relative;
+            width: 100px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+            background: #03a9f4;
+        }
+
+        #files {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100px;
+            height: 40px;
+            opacity: 0;
+            z-index: 10;
+        }
+
+        #preview {
+            width: 300px;
+        }
+    </style>
+    <script src="small-exif.js"></script>
+</head>
+<body>
+<div class="input-div">
+    上传图片
+    <input type="file" id="files">
+</div>
+
+<img src="blank.jpg" id="preview">
+<script>
+
+
+    EXIF.getData("data:image/jpg;base64,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", function () {
+        Orientation = EXIF.getTag(this, 'Orientation');
+         console.log(Orientation,"-----------")
+    });
+
+
+    var ipt = document.getElementById('files'),
+        img = document.getElementById('preview'),
+        Orientation = null;
+    ipt.onchange = function () {
+        var file = ipt.files[0],
+            reader = new FileReader(),
+            image = new Image();
+
+        if (file) {
+            EXIF.getData(file, function () {
+                Orientation = EXIF.getTag(this, 'Orientation');
+            });
+            reader.onload = function (ev) {
+                image.src = ev.target.result;
+                image.onload = function () {
+                    var imgWidth = this.width,
+                        imgHeight = this.height;
+
+                    if (imgWidth > imgHeight && imgWidth > 750) {
+                        imgWidth = 750;
+                        imgHeight = Math.ceil(750 * this.height / this.width);
+                    } else if (imgWidth < imgHeight && imgHeight > 1334) {
+                        imgWidth = Math.ceil(1334 * this.width / this.height);
+                        imgHeight = 1334;
+                    }
+
+                    var canvas = document.createElement("canvas"),
+                        ctx = canvas.getContext('2d');
+                    canvas.width = imgWidth;
+                    canvas.height = imgHeight;
+
+                    console.log(Orientation)
+
+                    if (Orientation && Orientation != 1) {
+                        switch (Orientation) {
+                            case 6:
+                                canvas.width = imgHeight;
+                                canvas.height = imgWidth;
+                                ctx.rotate(Math.PI / 2);
+                                ctx.drawImage(this, 0, -imgHeight, imgWidth, imgHeight);
+                                break;
+                            case 3:
+                                ctx.rotate(Math.PI);
+                                ctx.drawImage(this, -imgWidth, -imgHeight, imgWidth, imgHeight);
+                                break;
+                            case 8:
+                                canvas.width = imgHeight;
+                                canvas.height = imgWidth;
+                                ctx.rotate(3 * Math.PI / 2);
+                                ctx.drawImage(this, -imgWidth, 0, imgWidth, imgHeight);
+                                break;
+                        }
+                    } else {
+                        ctx.drawImage(this, 0, 0, imgWidth, imgHeight);
+                    }
+                    img.src = canvas.toDataURL("image/jpeg", 1);
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    }
+</script>
+</body>
+</html>

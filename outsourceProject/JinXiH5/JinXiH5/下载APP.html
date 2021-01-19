@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <title>分享</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="jquery-1.11.1.min.js"></script>
+
+    <script>
+        //媒体查询
+        window.onload = function () {
+            getRem(750, 100)
+        };
+        window.onresize = function () {
+            getRem(750, 100)
+        };
+        function getRem(pwidth, prem) {
+            var html = document.getElementsByTagName("html")[0];
+            var oWidth = document.body.clientWidth || document.documentElement.clientWidth;
+            html.style.fontSize = oWidth / pwidth * prem + "px";
+        }
+		//媒体查询
+    </script>
+
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="xz_box">
+            <img class="xz_box_img_a" src="icon_share_success@2x.png" alt="">
+            <p class="xz_box_img_a_p">欢迎加入金禧财富！</p>
+            <img class="xz_box_img_b" src="212@2x.png" alt="">
+            <img class="xz_box_img_c" src="icon_share_point@2x.png" alt="">
+            <div class="xz_box_div_a">
+                <p>下载APP，开启金禧财富之路</p>
+            </div>
+            <img class="xz_box_img_d" src="icon_share_logo3@2x.png" alt="">
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

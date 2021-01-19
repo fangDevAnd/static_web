@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="format-detection" content="telephone=yes" />
+    <meta itemprop="name" content="标题" />
+    <meta itemprop="image" content="副标题" />
+    <meta name="description" itemprop="description" content="分享图" />
+    <title>分享</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="jquery.min.js"></script>
+    <script src="host_url.js"></script>
+    <script src="tool.js"></script>
+
+    <script>
+        (function (doc, win) {
+            var docEl = doc.documentElement;
+            resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+            recalc = function () {
+                var clientWidth = docEl.clientWidth;
+                if (!clientWidth) return;
+                docEl.style.fontSize = 50 * (clientWidth / 375) + 'px';
+            };
+            if (!doc.addEventListener) return;
+            win.addEventListener(resizeEvt, recalc, false);
+            doc.addEventListener('DOMContentLoaded', recalc, false);
+        }(document, window));
+
+    </script>
+   <style type="text/css">
+    /*asong*/
+    .my_card {
+        content: "";
+        display: block;
+        width: 92%;
+        margin: 0px auto;
+    }
+
+    .trans {
+        transform: rotate(270deg);
+        -ms-transform: rotate(270deg);
+        /* IE 9 */
+        -moz-transform: rotate(270deg);
+        /* Firefox */
+        -webkit-transform: rotate(270deg);
+        /* Safari 和 Chrome */
+        -o-transform: rotate(270deg);
+        /* Opera */
+    }
+
+    .my_card .my_img {
+        /*background-size: 100% auto; */
+        /*background-image: url(http://news.szqusu.com:8084/jinxiImg/1351588953536600.jpg); */
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: left;
+        min-height: 3.6rem;
+        margin-top: -0.06rem;
+        height: 3.6rem !important;
+        box-shadow: 0px 0px 0.05rem 0.05rem rgba(155, 155, 155, 0.7);
+        border-radius: 0.05rem;
+        /* background: url(img_name_bg@2x.png) no-repeat;
+        background-size: cover; */
+    }
+
+    .my_card .card_style {
+        display: flex;
+        height: 100%;
+        position: relative;
+    }
+
+    #userUrl {
+        width: 52%;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        border-radius: 0.05rem 0 0 0.05rem;
+    }
+
+    .my_card .card_style .card_content {
+        border-radius:0 0.05rem 0.05rem 0; 
+        background: url(img_name_bg@2x.png) no-repeat;
+        background-size: cover;
+        font-size: 0.24rem;
+        padding-left: 0.5rem;
+        height: 100%;
+        text-align: center;
+        padding-right: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        flex: 1;
+        position: absolute;
+        right: 0;
+        width: 45%;
+    }
+
+    .my_card .card_style .card_content .card_company {
+        color: #000;
+        font-size: 0.3rem;
+        line-height: 0.6rem;
+		text-align: right;
+        font-weight: bold;
+    }
+
+    .my_card .card_style .card_content .card_name {
+        /* color: #A4A4A4; */
+        margin-top: 0.2rem;
+		text-align: right;
+        color: #000;
+    }
+
+    .my_card .card_style .card_content .card_position {
+        /* color: #A4A4A4; */
+        margin-top: 0.2rem;
+		text-align: right;
+        color: #000;
+    }
+
+    .my_card .card_style .card_content .card_description {
+        color: #A4A4A4;
+        margin-top: 0.2rem;
+        text-align: right;
+        /* color: #000; */
+    }
+
+    .my_card .card_style .card_content .card_address {
+        /* color: #A4A4A4; */
+        margin-top: 0.2rem;
+		text-align: right;
+        color: #000;
+    }
+
+    .my_search {}
+
+    .my_search_head {
+        display: flex;
+        align-items: center;
+        line-height: 0.6rem;
+    }
+
+    .my_search_head img {
+        width: 0.2rem;
+        height: 0.1rem;
+    }
+
+    .my_search_head p {
+        font-size: 0.28rem;
+        color: #666;
+        margin-left: 0.05rem;
+    }
+
+    .my_search_show {
+        display: flex;
+        flex-direction: column;
+        display: none;
+        padding-left: 0.25rem;
+        padding-bottom: 0.3rem;
+    }
+
+    .my_search_show div {
+        display: flex;
+        padding-top: 0.2rem;
+    }
+
+    .my_search_show div p:first-child {
+        padding-right: 0.5rem;
+        flex-shrink: 0;
+        font-weight: bold;
+    }
+
+    .my_search_show div p {
+        font-size: 0.26rem;
+        color: #666;
+    }
+
+    .zhezhaoceng {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .tip_box {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        background: #fff;
+        width: 95%;
+        border-radius: 0 0 0.3rem 0.3rem;
+    }
+
+    .tip_box_left {
+        width: 40%;
+    }
+
+    .tip_box_right {
+        width: 60%;
+        padding: 0.5rem 0 0.3rem;
+        position: relative;
+    }
+
+    .tip_box_p1 {
+        font-size: 0.35rem;
+        padding-bottom: 0.1rem;
+    }
+
+    .tip_box_p2 {
+        font-size: 0.25rem;
+    }
+
+    .tip_box_p3 {
+        font-size: 0.25rem;
+    }
+
+    .tip_box_p3 span {
+        color: #b65861;
+    }
+
+    .tip_box_right_img {
+        position: absolute;
+        /*left: 2rem;
+        width: 2.2rem;*/
+        left: 3rem;
+        width: 1.1rem;
+        top: 0;
+        height: 1.25rem;
+    }
+</style>
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="tzzx_head">
+            <div class="tzzx_head_left">
+                <div id="imgUrl" style="margin-top: -15px">
+                </div>
+                <!--<img src="629@2x.png" alt="">-->
+            </div>
+            <div class="tzzx_head_right">
+                <div class="tzzx_head_right_left">
+                    <p class="tzzx_head_right_left_p">想投资，咨询我</p>
+                    <div class="tzzx_head_right_left_p_div">
+                        <p id="companyName"></p>
+                        <div class="tzzx_head_right_left_p_div_xian"></div>
+                        <p id="position">
+                            <!--长沙分公司总经理-->
+                        </p>
+                    </div>
+                </div>
+                <div class="tzzx_head_right_right">
+                    <div>
+                        <!--<img src="icon_name_phone@2x.png" alt="">
+                        <p>电话</p>-->
+                        <!--<input type="hidden" id="telephone">电话号码</input>-->
+                    </div>
+                    <div style="margin: 0.6rem 0.2rem 0 0.2rem;" class="tzzx_head_right_left_p_div_xian"></div>
+                    <div style="margin-top: -36px">
+                        <!--<img src="icon_name_home@2x.png" alt="">
+                        <p>首页</p>-->
+                        <a id="tel">
+                            <img src="icon_name_phone@2x.png" alt=""></a>
+                        <p style="margin-top: -5px">电话</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="my_card">
+            <div class="my_img">
+                <div class="card_style">
+                    <div id="userUrl"></div>
+                    <div class="card_content">
+                        <div class="card_company" id="companyNames"></div>
+                        <div class="card_name"></span><span id="userName"></span></div>
+                        <div class="card_position" id="positions"></div>
+                        <div class="card_description" id="signature"></div>
+                        <!-- <div class="card_address" id="companyAddress"></div> -->
+                    </div>
+                </div>
+            </div>
+            <div class="my_search">
+                <div class="my_search_head" id="my_search_head">
+                    <img id="my_search_head_img" src="icon_more03.png" alt="">
+                    <p>查看全部信息</p>
+                </div>
+                <div class="my_search_show" id="my_search_head_show">
+                    <div>
+                        <p>姓名</p>
+                        <p id="userNames"></p>
+                    </div>
+                    <div>
+                        <p>电话</p>
+                        <p id="telephones"></p>
+                    </div>
+                    <div>
+                        <p>职位</p>
+                        <p id="positionss"></p>
+                    </div>
+                    <div>
+                        <p>签名</p>
+                        <p id="signatures"></p>
+                    </div>
+                    <div>
+                        <p>公司</p>
+                        <p id="companyNamess"></p>
+                    </div>
+                    <div>
+                        <p>地址</p>
+                        <p id="companyAddresss"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- <div class="xiantiao"></div> -->
+        <div class="tzzx_head_body">
+            <div id="video"></div>
+            <p class="tzzx_head_body_head" id="title">
+                <!--月刊抢鲜看｜朝宏伟的“金禧计划2023”全速迈进-->
+            </p>
+            <p class="tzzx_head_body_main" id="content">
+                <!--2019年1月，董事长盘继彪先生在全国员工年会上提出盛大金禧《第五个五年发展规划》。今年作为盛大金禧实施《第五个五年发展规划》的起始之年，公司制定了核战略与关键工作，明确规定了“五五规划”的发展目标、发展理停飞、发展思路及发展举措。-->
+            </p>
+            <!--<img class="tzzx_head_body_img" src="108@2x.png" alt="">-->
+            <div class="tzzx_head_body_tip">
+                <p>阅读：<span id="readcount"></span></p>
+                <p>评论：<span id="commentcount"></span></p>
+                <p>点赞：<span id="praise"></span></p>
+            </div>
+        </div>
+        <div class="tz_images" onclick="btn()">
+            <img src="icon_share_point@2x.png" alt="">
+        </div>
+        <div class="tz_box_a" onclick="btn()">
+            打开APP,查看更多精彩内容
+        </div>
+    </div>
+
+    <!-- 开始 -->
+    <div id="mengceng" style="display: none">
+        <div onclick="hide()" class="zhezhaoceng"></div>
+        <div class="tip_box">
+            <div class="tip_box_left"></div>
+            <div class="tip_box_right">
+                <p class="tip_box_p1">链接打不开？</p>
+                <p class="tip_box_p2">请点击右上角 <b>...</b></p>
+                <p class="tip_box_p3">请选择在<span>“浏览器”</span>中打开</p>
+                <img class="tip_box_right_img" src="icon_arrows.png" alt="">
+            </div>
+
+        </div>
+    </div>
+    <!-- 结束 -->
+
+
+</body>
+<script type="text/javascript">
+    $("#my_search_head").click(function () {
+        $("#my_search_head_show").toggle();
+        $("#my_search_head_img").toggleClass("trans");
+    });
+    getQueryVariable();
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) { return pair[1]; }
+        }
+        return (false);
+    }
+
+    //我的名片
+    portrayal();
+    function portrayal() {
+        var params = {
+            memberId: getQueryVariable("memberId")//根据Key地址栏上的参数值
+        }
+        $.ajax({
+            type: 'post',
+            url: api + '/jinxi/user/shareCard.action',
+            data: params,
+            success: function (data) {
+                $("#userName").html(data.data.compellation);//姓名
+                $("#userTitle").html(data.data.userTitle);//称号
+                //头像
+                if (data.data.userUrl != null) {
+                    // $('#imgUrl').append('<img id="userUrl" style="min-height:0.8rem; height:0.8rem !important;margin-top: 0.3rem"  src=' + data.data.userUrl + ' alt="">')
+                    $("#userUrl").css("background-image", "url(" + data.data.userUrl + ")");
+                    $('#headUrl').append('<img id="userUrl" style="min-height:3.08rem;margin-top: -0.06rem; height:3.08rem !important" src=' + data.data.userUrl + ' alt="">')
+                } else {
+                    // $('#imgUrl').append('<img id="userUrl"  style="min-height:0.8rem; height:0.8rem !important;margin-top: 0.3rem" src="./icon_my_head_default.png" alt="">')
+                    $("#userUrl").css("background-image", "url(" + data.data.userUrl + ")");
+                    $('#headUrl').append('<img id="userUrl" style="min-height:3.08rem;margin-top: -0.06rem; height:3.08rem !important" src="./icon_my_head_default@3x.png" alt="">')
+                }
+                $("#companyName").html(data.data.companyName);//公司名称
+                $("#companyNames").html(data.data.companyName);//公司名称
+                $("#companyAddress").html(data.data.companyAddress);//公司地址
+                $("#position").html(data.data.position);//职位
+                $("#positions").html(data.data.position);//职位
+                $("#signature").html(data.data.signature);//个人签名
+                $('#tel').attr('href', 'tel:' + data.data.telephone);
+                $("#telephone").html(data.data.telephone);//电话号码
+                $("#title").html(data.data.title);//资讯标题
+
+                //show
+                $("#userNames").html(data.data.compellation);//姓名
+                $("#telephones").html(data.data.telephone);//电话号码
+                $("#positionss").html(data.data.position);//职位
+                $("#signatures").html(data.data.signature);//个人签名
+                $("#companyNamess").html(data.data.companyName);//公司名称
+                $("#companyAddresss").html(data.data.companyAddress);//公司地址
+                //end
+
+                document.title = data.data.title;
+
+                $("#content").html(data.data.content);//资讯内容
+                if (data.data.videoUrl != null && data.data.videoUrl != "" && data.data.videoUrl != undefined) {
+                    //视频封面图
+                    var url = data.data.logo;
+                    var str = "";
+                    if (url.indexOf(",") != -1) {
+                        str = url.split(",")[0];
+                    } else {
+                        str = data.data.logo;
+                    }
+                    $("#video").append('<video poster=' + str + ' controls="controls" src=' + data.data.videoUrl + ' width="320" height="240" style="margin-left: 0.23rem"> </video>')//视频地址
+                }
+                $("#readcount").html(data.data.readcount);//阅读数
+                $("#commentcount").html(data.data.commentcount);//评论数
+                $("#praise").html(data.data.praise);//点赞数
+            }
+        });
+    }
+
+    //如果用户手机有安装该app，则直接打开app；否则就跳到应用市场下载
+    function btn() {
+        open()
+    }
+    //隐藏蒙层
+    function hide() {
+        document.getElementById('mengceng').style.display = 'none';
+    }
+</script>
+
+</html>

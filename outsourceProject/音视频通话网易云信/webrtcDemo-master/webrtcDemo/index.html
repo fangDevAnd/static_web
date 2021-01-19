@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="keywords" content="网络探测工具">
+  <meta name="description" content="网络探测工具">
+  <title>h5音视频demo</title>
+  <link rel="stylesheet" href="./css/h5.css">
+</head>
+
+<body>
+
+  <script type='x-tpl' id='tpl'>
+
+    <div id="app" class="g-page">
+      <div class="m-body">
+      
+        <div class='login-title' v-show="logoIcon">
+          <img src='./img/logo.png'></img>
+        </div>
+
+        <div id='doLogin' v-show="loginPage">
+          <div class='login-item'>
+            <div class='login-item-text'>账号</div>
+            <input type="text" v-model='account' class='login-item-input' placeholder='请输入'></input>
+          </div>
+          <div class='login-item'>
+            <div class='login-item-text'>密码</div>
+            <input type="text" v-model='password' class='login-item-input' placeholder='请输入'></input>
+          </div>
+          <button class='login-submit-btn' @click="login">登录</button>
+        </div>
+
+        <div id='doCall' v-show="callPage">
+          <div class='call-item'>
+            <div class='call-item-text'>呼叫账号</div>
+            <input type="text" v-model='calleeAccount' class='call-item-input' placeholder='请输入想要通话的账号'></input>
+          </div>
+          <button class='call-audio-btn' @click='audioCall'>语音通话</button>
+          <button class='call-video-btn' @click='videoCall'>视频通话</button>
+          <button class='call-logout-btn' @click='logout'>退出登录</button>
+        </div>
+
+        <div id='doCalling' class='calling-page' v-show="callingPage">
+          <div class='video-calling-preview-item' id='preview' ref="preview" v-show='preview'>
+            <video class='preview' autoplay=true></video>
+          </div>
+          <div class='audio-calling-item' v-show='audioCallingDesc'>
+            <div class='audio-calling-item-text' ref="audioCallingDesc" id="audioCallingDesc">{{callingText}}</div>
+          </div>
+          <div class='video-calling-item' v-show='videoCallingDesc'>
+            <div class='video-calling-item-text' ref="videoCallingDesc">{{callingText}}</div>
+          </div>
+        </div>
+
+        <div id='doCalled' class='called-page' v-show="calledPage">
+          <div class='video-called-large-preview-item' v-show="largeVideo" id='large' ref="large">
+            <video autoplay=true class="large-video"></video>
+          </div>
+          <div class='video-called-small-preview-item' id="small" v-show="smallVideo" ref="small" @click="swapPlaces">
+            <video autoplay=true class="small-video"></video>
+          </div>
+          <div class='duration-item' v-show="durationItem" >
+            <div class='duration-item-text' ref="durationDesc">{{durationText}}</div>
+          </div>
+          <div class='network-item' v-show="networkItem">
+            <div class='network-item-text' ref="networkDesc">网络正常: </div>
+            <div class='network-item-icon1' v-show="icon1"></div>
+            <div class='network-item-icon2' v-show="icon2"></div>
+            <div class='network-item-icon3' v-bind:style="{ background: color3 }" v-show="icon3"></div>
+            <div class='network-item-icon4' v-bind:style="{ background: color3 }" v-show="icon4"></div>
+            <div class='network-item-icon5' v-bind:style="{ background: color5 }" v-show="icon5"></div>
+            <div class='network-item-icon6' v-bind:style="{ background: color5 }" v-show="icon6"></div>
+          </div>
+          <div class='call-duration-item' v-show="callDurationItem">
+            <div class='call-duration-item-text'>{{callDurationDesc}}</div>
+          </div>
+          <div class='ui-flex justify-center center switch-camera-title' id='switch' ref="switch" @click="switchTheCamera">
+            <img src='./img/switch.png'></img>
+          </div>
+          <div class='ui-flex justify-center center on-of-camera-title' id='camera' ref="camera" @click="cameraOpen == true ? openTheCamera():closeTheCamera()">
+            <img src='./img/camera.png'></img>
+          </div>
+          <div class='ui-flex justify-center center on-of-mic-title' id='mic' ref="mic" @click="micOpen == true ? openTheMic():closeTheMic()">
+            <img src='./img/mic.png'></img>
+          </div>
+          <div class='ui-flex justify-center center loudspeaker-title' id='loudspeaker' ref="loudspeaker" @click="loudspeaker()"">
+            <img src='./img/voice.png'></img>
+          </div>
+          <div class="slider" v-show='slider'>
+            <div class="txt">{{sliderNum}}</div>
+            <input class="volumeSliderInput" id="volumeSliderInput1" type="range" min="0" max="10" step="1" value="10" data-orientation="vertical" style="position: absolute;width: 1px;height: 1px;overflow: hidden;opacity: 0;">
+            <div  class="rangeslider rangeslider--vertical" id="js-rangeslider-2" style>
+              <div class="rangeslider__fill" id='rangeslider__fill' style="height: 78px;">
+              </div>
+              <div class="rangeslider__handle" id="rangeslider__handle" style="bottom: 70px;">
+              </div>
+            </div>
+          </div>
+          <div class='ui-flex justify-center center hangup-title' id='hangup' ref="hangup" @click="hangup">
+            <img src='./img/phone.png'></img>
+          </div>
+        </div>
+
+        <div id='doIncomingCall' class='incoming-call-page' v-show="incomingCallPage">
+          <div class='incoming-item'>
+            <div class='incoming-item-text'>{{incomingCallDesc}}</div>
+          </div>
+          <button class='incoming-ignore-btn' @click='ignore'>忽略</button>
+          <button class='incoming-answer-btn' @click="answer">接听</button>
+        </div>
+        
+      </div>
+    </div>  
+  </script>
+  <div id='app'></div>
+  <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js" type="text/javascript" charset="utf-8"></script>
+  <script src="./js/NIM_Web_WebRTC_v6.8.0.js"></script>
+  <script src="./js/NIM_Web_SDK_v6.8.0.js"></script>
+  <script src="./js/vue.js"></script>
+  <script src="./js/vconsole.min.js"></script>
+  <script src="./js/h5.js"></script>
+</body>
+
+</html>

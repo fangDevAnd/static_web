@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html style="font-size: 56px;" data-dpr="1" class="ios" lang="en"><head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!--<title>Document</title>-->
+    <link rel="stylesheet" href="register_files/index.css">
+<style>
+    .code_case {
+        border-bottom: 1px solid #E8E8E8;
+        width: 682.83px;
+    }
+</style><style>@media print {#ghostery-purple-box {display:none !important}}</style></head>
+
+<body>
+    <div class="wrapper">
+        <div class="nav">
+            <!--<img class="turn_prev" src="./static/img/turn_prev.png" alt="">-->
+            <img class="turn_prev" src="" alt="">
+            <p>盛大金禧</p>
+            <p></p>
+        </div>
+
+        <div class="register_case">
+            <p class="register_title">新用户注册</p>
+
+            <p class="together_code">邀请码： <span id="invitationCode">TP06FH</span></p>
+            <!--<input class="code_case" id="code" placeholder="邀请码(非必填)" type="text">-->
+
+            <div class="from_case">
+                <div class="list">
+                    <div class="icon_case">
+                        <img class="icon" src="register_files/register_phone.png" alt="">
+                    </div>
+                    <input placeholder="请输入手机号" id="userPhone" type="text" maxlength="11" value="13077995907">
+
+                </div>
+                <div class="list">
+                    <div class="icon_case">
+                        <img class="icon" src="register_files/register_vervify.png" alt="">
+                    </div>
+                    <input placeholder="请输入图形验证码" id="pictureCode" type="text" maxlength="4">
+                    <img id="img" class="vervifyimg" onclick="changeImg()" alt="">
+                </div>
+                <div class="list">
+                    <div class="icon_case">
+                        <img class="icon" src="register_files/register_message.png" alt="">
+                    </div>
+                    <input placeholder="请输入短信验证码" id="verifyCode" type="text" maxlength="6">
+                    <div class="btn" onclick="getCode()">发送验证码</div>
+                </div>
+            </div>
+
+            <p class="tips">注册即表示同意<span onclick="btn()">《用户注册协议》</span></p>
+            <div class="register_btn" onclick="register()">注册</div>
+        </div>
+
+
+    </div>
+
+<script src="register_files/rem.js"></script>
+<script src="register_files/jquery.js"></script>
+<script src="register_files/host_url.js"></script>
+<script src="register_files/changeImg.js"></script>
+<script type="text/javascript">
+
+    getQueryVariable();
+    function getQueryVariable(variable)
+    {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i=0;i<vars.length;i++) {
+            var pair = vars[i].split("=");
+            if(pair[0] == variable){return pair[1];}
+        }
+        return(false);
+    }
+
+    initData();
+    function initData() {
+        $("#invitationCode").html(getQueryVariable("invitationCode"));//邀请码
+    }
+
+    //获取短信验证码
+    function getCode() {
+        debugger
+        var params={
+            userPhone: $("#userPhone").val(),
+            validateCode:$("#pictureCode").val(),
+        }
+        $.ajax({
+            type: 'post',
+            url: api+'/jinxi/user/getVerifyCode.action',
+            data: params,
+            success: function (data) {
+                if(data.success){
+                    alert("发送成功")
+                }else {
+                    alert(data.msg);
+                }
+                //refreshImg($("#userPhone").val());//图片验证码
+            }
+        });
+    }
+    $( document ).ready( function() {
+        refreshImg()//获取图片验证码
+    })
+
+    //刷新获取图片验证码
+    function changeImg() {
+        refreshImg();//显示图片验证码
+    }
+
+    //注册协议
+    function btn(){
+        location.href = "agreement.html";
+    }
+
+    //注册
+    function register() {
+        var form=new Object();
+        form.userPhone = $("#userPhone").val();
+        form.verifyCode = $("#verifyCode").val();
+        form.pictureCode = $("#pictureCode").val();
+        form.registrationType = "Android"//注册类型;
+        form.invite = getQueryVariable("invitationCode")//邀请码
+        $.ajax({
+            type: 'post',
+            url: api+'/jinxi/user/register.action',
+            data: form,
+            success: function (data) {
+                if (data.success == true) {
+                    location.href = "register_success.html";
+                } else {
+                    alert(data.msg);
+                }
+            }
+        });
+    }
+</script>
+
+<div></div><div style="position: fixed; display: flex; justify-content: center; bottom: -40vh; left: 0px; width: 100%; transition: all 80ms ease 0s;"></div></body><script type="text/javascript" id="useragent-switcher">navigator.__defineGetter__("userAgent", function() {return "Mozilla/5.0 (iPhone; CPU iPhone OS 13_3 like Mac OS X) AppleWebKit/605.1.15 (KHTML%2C like Gecko) Mobile/15E148"})</script></html>

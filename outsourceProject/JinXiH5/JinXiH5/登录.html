@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <title>分享</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="jquery-1.11.1.min.js"></script>
+
+    <script>
+        //媒体查询
+        window.onload = function () {
+            getRem(750, 100)
+        };
+        window.onresize = function () {
+            getRem(750, 100)
+        };
+        function getRem(pwidth, prem) {
+            var html = document.getElementsByTagName("html")[0];
+            var oWidth = document.body.clientWidth || document.documentElement.clientWidth;
+            html.style.fontSize = oWidth / pwidth * prem + "px";
+        }
+		//媒体查询
+    </script>
+
+</head>
+
+<body>
+
+    <div class="main">
+        <div class="main_head">
+            <p>新用户注册</p>
+        </div>
+        <div class="dl_box_dl">
+            <p class="_main_body_a">邀请码：<span> 4565768797</span></p>
+            <div class="_main_body_b">
+                <form action="">
+                    <div class="_main_body_b_p_a">
+                        <img src="icon_login_phone@2x.png" alt="">
+                        <input type="text" placeholder="请输入手机号码" />
+                        <p class="_main_body_b_p_a_p">发送验证码</p>
+                    </div>
+                    <div  class="_main_body_b_p_a">
+                        <img style="width:0.27rem;height:0.33rem;" src="icon_login_yz@2x.png" alt="">
+                        <input type="text" placeholder="请输入验证码" />
+                        <img class="_main_body_b_p_a_imgc" src="200316234234.png" alt="" />
+                    </div>
+                    <div  class="_main_body_b_p_a">
+                        <img style="width:0.28rem;height:0.22rem;" src="icon_login_message@2x.png" alt="">
+                        <input type="text" class="_main_body_b_p_a_input" placeholder="请输入密码" />
+                        <img class="gb_kkk" src="icon_login_delete@2x.png" alt="" />
+                    </div>
+                </form>
+            </div>
+            <div class="btn_dl btn_dl_dd">
+                <p>注册即表示同意《用户注册协议》 </p>
+                <div class="btn_dl_dd_div" type="button">登录</button>
+            </div>
+        </div>
+
+    </div>
+
+
+</body>
+
+</html>

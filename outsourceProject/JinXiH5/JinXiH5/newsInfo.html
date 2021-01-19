@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=0, minimum-scale=1.0, maximum-scale=1.0">
+    <meta charset="utf-8">
+    <meta name="referrer" content="never">
+    <title id=title>分享</title>
+    <link rel="stylesheet" type="text/css" href="main.css">
+    <script src="jquery.min.js"></script>
+    <script src="echarts.min.js"></script>
+    <script src="host_url.js"></script>
+    <script src="tool.js"></script>
+
+</head>
+<style type="text/css">
+    /*asong*/
+    .my_card {
+        content: "";
+        display: block;
+        width: 92%;
+        margin: 0px auto;
+    }
+
+    .trans {
+        transform: rotate(270deg);
+        -ms-transform: rotate(270deg);
+        /* IE 9 */
+        -moz-transform: rotate(270deg);
+        /* Firefox */
+        -webkit-transform: rotate(270deg);
+        /* Safari 和 Chrome */
+        -o-transform: rotate(270deg);
+        /* Opera */
+    }
+
+    .my_card .my_img {
+        /*background-size: 100% auto; */
+        /*background-image: url(http://news.szqusu.com:8084/jinxiImg/1351588953536600.jpg); */
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: left;
+        min-height: 3.6rem;
+        margin-top: -0.06rem;
+        height: 3.6rem !important;
+        box-shadow: 0px 0px 0.05rem 0.05rem rgba(155, 155, 155, 0.7);
+        border-radius: 0.05rem;
+        /* background: url(img_name_bg@2x.png) no-repeat;
+        background-size: cover; */
+    }
+
+    .my_card .card_style {
+        display: flex;
+        height: 100%;
+        position: relative;
+    }
+
+    #userUrl {
+        width: 52%;
+        background-size: 100% 100%;
+        background-repeat: no-repeat;
+        border-radius: 0.05rem 0 0 0.05rem;
+    }
+
+    .my_card .card_style .card_content {
+        border-radius:0 0.05rem 0.05rem 0; 
+        background: url(img_name_bg@2x.png) no-repeat;
+        background-size: cover;
+        font-size: 0.24rem;
+        padding-left: 0.5rem;
+        height: 100%;
+        text-align: center;
+        padding-right: 8px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: center;
+        flex: 1;
+        position: absolute;
+        right: 0;
+        width: 45%;
+    }
+
+    .my_card .card_style .card_content .card_company {
+        color: #000;
+        font-size: 0.3rem;
+        line-height: 0.6rem;
+        font-weight: bold;
+        text-align: right;
+    }
+
+    .my_card .card_style .card_content .card_name {
+        /* color: #A4A4A4; */
+        margin-top: 0.2rem;
+        color: #000;
+        text-align: right;
+    }
+
+    .my_card .card_style .card_content .card_position {
+        /* color: #A4A4A4; */
+        margin-top: 0.2rem;
+        text-align: right;
+        color: #000;
+    }
+
+    .my_card .card_style .card_content .card_description {
+        color: #A4A4A4;
+        margin-top: 0.2rem;
+        text-align: right;
+        /* color: #000; */
+    }
+
+    .my_card .card_style .card_content .card_address {
+        /* color: #A4A4A4; */
+        margin-top: 0.2rem;
+        text-align: right;
+        color: #000;
+    }
+
+    .my_search {}
+
+    .my_search_head {
+        display: flex;
+        align-items: center;
+        line-height: 0.6rem;
+    }
+
+    .my_search_head img {
+        width: 0.2rem;
+        height: 0.1rem;
+    }
+
+    .my_search_head p {
+        font-size: 0.28rem;
+        color: #666;
+        margin-left: 0.05rem;
+    }
+
+    .my_search_show {
+        display: flex;
+        flex-direction: column;
+        display: none;
+        padding-left: 0.25rem;
+        padding-bottom: 0.3rem;
+    }
+
+    .my_search_show div {
+        display: flex;
+        padding-top: 0.2rem;
+    }
+
+    .my_search_show div p:first-child {
+        padding-right: 0.5rem;
+        flex-shrink: 0;
+        font-weight: bold;
+    }
+
+    .my_search_show div p {
+        font-size: 0.26rem;
+        color: #666;
+    }
+
+    .zhezhaoceng {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+    }
+
+    .tip_box {
+        display: flex;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        margin: 0 auto;
+        background: #fff;
+        width: 95%;
+        border-radius: 0 0 0.3rem 0.3rem;
+    }
+
+    .tip_box_left {
+        width: 40%;
+    }
+
+    .tip_box_right {
+        width: 60%;
+        padding: 0.5rem 0 0.3rem;
+        position: relative;
+    }
+
+    .tip_box_p1 {
+        font-size: 0.35rem;
+        padding-bottom: 0.1rem;
+    }
+
+    .tip_box_p2 {
+        font-size: 0.25rem;
+    }
+
+    .tip_box_p3 {
+        font-size: 0.25rem;
+    }
+
+    .tip_box_p3 span {
+        color: #b65861;
+    }
+
+    .tip_box_right_img {
+        position: absolute;
+        /*left: 2rem;
+        width: 2.2rem;*/
+        left: 3rem;
+        width: 1.1rem;
+        top: 0;
+        height: 1.25rem;
+    }
+    
+    .header {
+            display: flex;
+            background: url(images/icon_name_b_bg2x.png);
+            width: 6.4rem;
+            height: 2.68rem;
+            margin: 0.3rem auto 0;
+            border-radius: 0.1rem;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            padding: 0.6rem 0.5rem 0.5rem 0.6rem;
+        }
+
+        .header_left {
+            width: 1.12rem;
+            height: 1.12rem;
+            margin-right: 0.26rem;
+        }
+
+        .header_left img {
+            width: 100%;
+            height: 100%;
+            border-radius: 100%;
+        }
+
+        .header_right {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+        }
+
+        .header_right_top_div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header_right_top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header_top_center {}
+
+        .header_top_center_a {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.15rem;
+        }
+
+        .header_top_center_a p:nth-child(1) {
+            font-size: 0.36rem;
+            color: #E2C699;
+            font-weight: bold;
+        }
+
+        .header_top_center_a p:nth-child(2) {
+            font-size: 0.24rem;
+            color: #FFFFFF;
+            margin-left: 0.24rem;
+        }
+
+        .header_top_center_b {
+            font-size: 0.24rem;
+            color: #E2C699;
+            opacity: 0.7;
+        }
+
+        .header_top_right {
+            border-radius: 0.25rem;
+            display: flex;
+            width: 1.4rem;
+            height: 0.5rem;
+            background: #fff;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .header_top_right img {
+            width: 0.3rem;
+            height: 0.3rem;
+            margin-right: 0.1rem;
+        }
+
+        .header_top_right p {
+            font-size: 0.24rem;
+            color: #212121;
+        }
+
+        .header_right_headbo_p {
+            margin-top: 0.1rem
+        }
+
+        .header_center_line {
+            height: 0.01rem;
+            width: 100%;
+            background: url(images/icon_name_line2x.png);
+            background-size: 100% 100%;
+        }
+
+        .header_right_bottom {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header_bottom_p {
+            font-size: 0.24rem;
+            color: #A4A4A4;
+        }
+
+        .header_bottom_div {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .header_bottom_div p {
+            font-size: 0.22rem;
+            color: #A4A4A4;
+            opacity: 0.7;
+        }
+
+        .header_bottom_div img {
+            width: 0.14rem;
+            height: 0.24rem;
+            /* margin-left: 0.5rem; */
+            flex-shrink: 0;
+        }
+
+        .boader {
+            padding: 0.3rem 0.3rem 0;
+        }
+
+        .boader_a {
+            display: flex;
+            justify-content: space-between;
+            padding-bottom: 0.3rem;
+        }
+
+        .boader_a p {
+            font-size: 0.3rem;
+            color: #212121;
+            font-weight: bold;
+        }
+
+        .boader_a img {
+            width: 0.14rem;
+            height: 0.24rem;
+        }
+
+        .boader_b {}
+
+        .boader_b_div_a {
+            display: flex;
+            justify-content: space-between;
+            padding: 0 0.15rem;
+        }
+
+        .boader_b_div_a div {}
+
+        .boader_b_div_a div p:nth-child(1) {
+            font-size: 0.24rem;
+            color: #212121;
+        }
+
+        .boader_b_div_a div p:nth-child(2) {
+            font-size: 0.28rem;
+            color: #E62B2B;
+            font-weight: bold;
+            margin: 0.1rem 0;
+        }
+
+        .boader_b_div_a div p:nth-child(3) {
+            font-size: 0.24rem;
+            color: #E62B2B;
+
+        }
+
+        .lineer {
+            height: 1px;
+            background: #E5E5E5;
+            margin: 0.38rem 0;
+        }
+
+        .boader_b_div_c {
+            margin: 0.25rem 0;
+        }
+
+        .boader_b_div_c p {
+            font-size: 0.24rem;
+            color: #A4A4A4;
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            text-overflow: ellipsis;
+        }
+        .boader_b_div_c #point{
+            width: 0.27rem;
+            height: 0.33rem;
+            background-color: red;
+            background: url(icon_share_point2x.png);
+            background-size: 100% 100%;
+            margin: 0.1rem auto;
+        }
+        .green p:nth-child(2) {
+            color: #42B121 !important;
+        }
+
+        .green p:nth-child(3) {
+            color: #42B121 !important;
+        }
+
+        .bodyer {
+            padding: 0 0.3rem 0.3rem;
+        }
+
+        .bodyer_a {
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .bodyer_a div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bodyer_a div:nth-child(odd) {
+            margin-right: 0.18rem;
+        }
+
+        .bodyer_a div {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .bodyer_a div p {
+            font-size: 0.3rem;
+            color: #212121;
+            padding: 0.18rem 0 0.24rem;
+        }
+
+        .bodyer_a div img {
+            width: 3.34rem;
+            height: 2.16rem;
+            border-radius: 0.08rem;
+        }
+
+        .heisekuai {
+            height: 0.16rem;
+            background: #F2F2F2;
+        }
+
+        .footers {
+            padding: 0.3rem;
+        }
+
+        .footers_a {
+            display: flex;
+            flex-direction: column;
+            border-bottom: 1px solid #E5E5E5;
+            margin-bottom: 0.24rem;
+        }
+
+        .footers_a p {
+            font-size: 0.3rem;
+            color: #212121;
+        }
+
+        .footers_a span {
+            width: 1.2rem;
+            font-size: 0.24rem;
+            color: #687CC9;
+            padding: 0.1rem 0.14rem;
+            border-radius: 0.04rem;
+            background: #ECF0FF;
+            margin: 0.2rem 0 0.36rem 0;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .header_bottom_p_b {
+            opacity: 0.7;
+        }
+
+        /* .headbo_p {
+            display: flex;
+            justify-content: space-between;
+            margin: 0 0.3rem;
+            align-items: center;
+        }
+
+        .headbo_p img {
+            height: 0.22rem
+        } */
+</style>
+
+<body>
+ <!--    <div class="main" id="card">
+        <div id=shareCard>
+            <div class="main">
+                <div class="header">
+                    <div class="header_top">
+                        <div id=userImg class="header_top_left">
+                        </div>
+                        <div class="header_top_center_box">
+                            <div class="header_top_center">
+                                <div class="header_top_center_a">
+                                    <p id=name></p>
+                                    <p id=position></p>
+                                </div>
+                                <p id=company class="header_top_center_b"></p>
+                            </div>
+                        <a id=tel>
+                            <div class="header_top_right" >
+                                <img src="images/icon_name_phone2x.png" alt="">
+                                <p >电话</p>
+                            </div>
+                        </a>
+                        </div>
+                    </div>
+                    <div class="headbo_p">
+                        <p id=signature class="header_bottom_p header_bottom_p_b"></p>
+                    </div>
+                    <div class="header_bottom">            
+                        <div class="header_bottom_div">
+                            <p id=address></p>
+                        </div>
+                    </div>
+                </div>
+                <div id=cardList></div>
+</div>
+</div>
+<div class="main" id="portrayal">
+    <div class="tzzx_head">
+        <div class="tzzx_head_left">
+            <div id="imgUrls" style="margin-top: -0.12rem">
+            </div>
+        </div>
+        <div class="tzzx_head_right">
+            <div class="tzzx_head_right_left">
+                <p class="tzzx_head_right_left_p" id="userNames"></p>
+                <div class="tzzx_head_right_left_p_div">
+                    <p id="memberLevel"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="tzzx_head_main_c_xian"></div>
+        <p id="userTitle" class="title"></p>
+        <div class="tzzx_head_main_c">
+            <div id="main" style="width: 100%;height:300px;"></div>
+        </div>
+    </div>
+<div class="xiantiao"></div> 
+<div class="tzzx_head_body">
+        <div id="video"></div>
+        <p class="tzzx_head_body_head" id="titles">
+        </p>
+        <p class="tzzx_head_body_main" id="contents">
+        </p>
+        <div class="tzzx_head_body_tip">
+            <p>阅读：<span id="readcounts"></span></p>
+            <p>评论：<span id="commentcounts"></span></p>
+            <p>点赞：<span id="praises"></span></p>
+        </div>
+    </div>
+    <div class="tz_images" onclick="btn()">
+        <img src="icon_share_point@2x.png" alt="">
+    </div>
+    <div class="tz_box_a" onclick="btn()">
+        打开APP,查看更多精彩内容
+    </div>
+    <div id="mengceng" style="display: none">
+        <div onclick="hide()" class="zhezhaoceng"></div>
+        <div class="tip_box">
+            <div class="tip_box_left"></div>
+            <div class="tip_box_right">
+                <p class="tip_box_p1">链接打不开？</p>
+                <p class="tip_box_p2">请点击右上角 <b>...</b></p>
+                <p class="tip_box_p3">请选择在<span>“浏览器”</span>中打开</p>
+                <img class="tip_box_right_img" src="icon_arrows.png" alt="">
+            </div>
+        </div>
+    </div>
+</div> -->
+<div id=htmlBody></div>
+
+</body>
+<script type="text/javascript">
+
+    $(function(){ 
+        getQueryVariable();  
+        //我的名片
+        myCard();
+
+
+
+   })
+
+    $("#my_search_head").click(function () {
+        $("#my_search_head_show").toggle();
+        $("#my_search_head_img").toggleClass("trans");
+    });
+    getQueryVariable();
+    function getQueryVariable(variable) {
+        var query = window.location.search.substring(1);
+        var vars = query.split("&");
+        for (var i = 0; i < vars.length; i++) {
+            var pair = vars[i].split("=");
+            if (pair[0] == variable) { return pair[1]; }
+        }
+        return (false);
+    }
+
+    function myCard() {
+        var params = {
+            memberId: getQueryVariable("memberId")//根据Key地址栏上的参数值
+        }
+        $.ajax({
+            type: 'post',
+            url: api + '/api/card/me/share',
+            data: params,
+            success: function (data) {
+                htmlBody = '<div class="main" id="card"><div id=shareCard><div class="main"><div class="header"><div id=userImg class="header_left"></div><div class="header_right"><div class="header_right_top_div"><div class="header_right_top"><div class="header_top_center"><div class="header_top_center_a"><p id=name></p><p id=position></p></div><p id=company class="header_top_center_b"></p></div><a id=tel><div class="header_top_right"><img src="images/icon_name_phone2x.png" alt=""><p>电话</p></div></a></div><div class="header_right_headbo_p"><p id=signature class="header_bottom_p header_bottom_p_b"></p></div></div><div class="header_center_line"></div><div class="header_right_bottom"><div class="header_bottom_div"><p id=address></p></div></div></div></div><div id=cardList></div></div></div><div class="main" id="portrayal"><div class="tzzx_head"><div class="tzzx_head_left"><div id="imgUrls" style="margin-top: -0.12rem"></div></div><div class="tzzx_head_right"><div class="tzzx_head_right_left"><p class="tzzx_head_right_left_p" id="userNames"></p><div class="tzzx_head_right_left_p_div"><p id="memberLevel" ></p></div></div></div></div><div class="tzzx_head_main_c_xian"></div><p id="userTitle" class="title"></p><div class="tzzx_head_main_c"><div id="main" style="width: 100%;height:300px;"></div></div></div><div class="xiantiao"></div> <div class="tzzx_head_body"><div id="video"></div><p class="tzzx_head_body_head" id="titles"></p><p class="tzzx_head_body_main" id="contents"></p></div>'
+                htmlBodyEnd = '<div class="tzzx_head_body_tip"><p>阅读：<span id="readcounts"></span></p><p>评论：<span id="commentcounts"></span></p><p>点赞：<span id="praises"></span></p></div></div><div class="tz_images" onclick="btn()"><img src="icon_share_point@2x.png" alt=""></div><div class="tz_box_a" onclick="btn()">打开APP,查看更多精彩内容</div><div id="mengceng" style="display: none"><div onclick="hide()" class="zhezhaoceng"></div><div class="tip_box"><div class="tip_box_left"></div><div class="tip_box_right"><p class="tip_box_p1">链接打不开？</p><p class="tip_box_p2">请点击右上角 <b>...</b></p><p class="tip_box_p3">请选择在<span>“浏览器”</span>中打开</p><img class="tip_box_right_img" src="icon_arrows.png" alt=""></div></div></div>'
+                $("#htmlBody").append(htmlBody)
+
+                //股票指数div
+                var shareData = '<div id=shareMain class="boader"><div class="boader_a" onclick="callNativeStartActivity("股票指数")"><p>股票指数</p></div><div class="boader_b"><div id=shareList1  class="boader_b_div_a"></div><div id=line1 class="lineer"></div><div id = shareList2 class="boader_b_div_a"></div><div class="boader_b_div_c"><p id= comment ></p><div id="point" onclick=showHight() ></div></div><div id=line2 class="lineer"></div></div></div>'
+                //重点产品div
+                var productData = '<div id=productMain class="bodyer"><div class="boader_a" onclick="callNativeStartActivity("重点产品")"><p>重点产品</p></div><div id=productList class="bodyer_a"></div></div>'
+                //今日财经div
+                var financeData= '<div id=financeMain class="footers"><div class="boader_a" onclick="callNativeStartActivity("今日财经")"><p>今日财经</p></div><div id=finacesList></div></div>'
+                var cardListData = data.data.data;
+                var userInfo = data.data.user;
+                if(cardListData){
+                    // for (var v = 0; v < cardListData.length; v++){
+                    //     if (cardListData[v].displayName == '今日财经'){
+                    //         $("#cardList").append(financeData)
+                    //     }else if(cardListData[v].displayName == '重点产品'){
+                    //         $("#cardList").append(productData)
+                    //     }else if(cardListData[v].displayName == '股票指数'){
+                    //         $("#cardList").append(shareData)
+                    //     }
+                    // }
+
+                //     for (z = 0; z < cardListData.length; z++) {
+                //         if (cardListData[z].displayName == '股票指数') {
+                //             var shareListData = cardListData[z].data
+                //             for (var j = 0; j < shareListData.length; j++) {
+                //                 var shareInfo = shareListData[j]
+                //                 if (parseFloat(shareInfo.upOrDown) > 0) {
+                //                     var share = '<div class="red"><p> ' + shareInfo.sharesName + '</p><p>' + (parseFloat(shareInfo.sharesValue)).toFixed(2) + '</p><p>' + shareInfo.upOrDown + '%' + '</p></div>';
+                //                 } else {
+                //                     var share = '<div class="green"><p> ' + shareInfo.sharesName + '</p><p>' + (parseFloat(shareInfo.sharesValue)).toFixed(2) + '</p><p>' + shareInfo.upOrDown + '%' + '</p></div>'
+                //                 }
+                //                 if (j < 4) {
+                //                     $("#shareList1").append(share);
+                //                     //获取简评
+                //                     getComment();
+                //                 } else if((j >= 4) && (j < 8)) {
+                //                     $("#shareList2").append(share);
+                //                 }
+                //             }
+                //         }
+
+                //         if (data.data.data[z].displayName == '重点产品') {
+                //             var productListData = cardListData[z].data
+                //             for (var n = 0; n < productListData.length; n++) {
+                //                 var productNewsInfo = productListData[n].webNews
+                //                 var jumpUrl = "share_news.html?" + "memberId=" + "78" + "&newsId=" + productNewsInfo.id
+                //                 if(productNewsInfo.title.length > 10){
+                //                     var newsTitle = productNewsInfo.title.substr(0, 10) + '...'
+                //                 }else{
+                //                     var newsTitle = productNewsInfo.title
+                //                 }
+                //                 var product ='<div><img src="' + ((productNewsInfo.logo).split(","))[0] + '" alt=""><a href=' + jumpUrl + '><p>' + newsTitle + '</p></a></div>'
+                //                 $("#productList").append(product);
+                //             }
+                //         }
+
+                //         if (data.data.data[z].displayName == '今日财经') {
+                //             var finacesListData = cardListData[z].data
+                //             for (var m = 0; m < finacesListData.length; m++) {
+                //                 finacesNewsInfo = finacesListData[m].webNews
+                //                 var lablels = ""
+                //                 var newsLabels = finacesNewsInfo.newsLabels;
+                //                 if (newsLabels){
+                //                     for (var k = 0; k < newsLabels.length; k++) {
+                //                     lablels = lablels + '<span style="margin-right: 0.2rem">' + newsLabels[k].name + '</span>'
+                //                     }
+                //                 }
+                //                 var jumpUrl = "share_news.html?" + "memberId=" + "78" + "&newsId=" + finacesNewsInfo.id
+                //                 var finaces = '<div class="footers_a"><a href=' + jumpUrl + '><p>' + finacesNewsInfo.title + '</p></a>' + '<div style="display: flex;flex-wrap: wrap;padding-bottom: 0.36rem;">' + lablels + '</div></div>'
+                //                 $("#finacesList").append(finaces);
+                //         }
+                //     }
+                // }
+                if(userInfo){
+                    document.getElementById("address").innerHTML = userInfo.companyAddress
+                    document.getElementById("name").innerHTML = userInfo.compellation
+                    document.getElementById("company").innerHTML = userInfo.companyName
+                    document.getElementById("signature").innerHTML = userInfo.signature
+                    document.getElementById("position").innerHTML = userInfo.position
+                    $('#tel').attr('href', 'tel:' + userInfo.telephone);
+                    if(data.data.user.userUrl != null && userInfo.userUrl != "" && userInfo.userUrl != undefined){
+                        var img = userInfo.userUrl;
+                    }else{
+                        var img = 'images/25852x.png';
+                    }
+                    var headImg = "<img src=" + img + " alt=" + ">"
+                    $("#userImg").append(headImg)//头像
+                }
+            }
+                //我的画像和底部的文章信息
+                portrayal();
+                
+            }
+        });
+
+    }
+
+
+    function getComment() {
+        var params = {
+            token: getQueryVariable("token")//根据Key地址栏上的参数值
+        }
+        $.ajax({
+            type: 'post',
+            url: api + '/api/card/comment/one',
+            data: params,
+            success: function (data) {
+                commentInfo = data.data.content
+                if (commentInfo){
+                    document.getElementById("comment").innerHTML = '简评：' +  data.data.content
+                }
+            }
+        })
+    }
+
+    function portrayal() {
+        var params = {
+            memberId: getQueryVariable("memberId"),//根据Key地址栏上的参数值
+            newsId: getQueryVariable("newsId"),
+        }
+        $.ajax({
+            type: 'post',
+            url: api + '/jinxi/user/shareNews.action',
+            data: params,
+            success: function (data) {
+                console.log("data.data= ", data.data)
+                var shareUserInfo = data.data
+                if (shareUserInfo){
+                    
+                    //sharing  1.我的画像 2.个人名片
+                    if (shareUserInfo.sharing == 1) {
+                        $("#portrayal").show();//显示画像div
+                        $("#shareCard").hide();//隐藏名片div
+                    } else {
+                        $("#shareCard").show();//显示名片div
+                        $("#portrayal").hide();//隐藏画像div
+                    }
+                    $("#userNames").html(shareUserInfo.userName);//用户姓名
+                    $("#memberLevel").html(shareUserInfo.memberLevel);//会员等级
+                    $("#userTitle").html(shareUserInfo.userTitle);//称号
+                    document.getElementById("title").innerHTML = shareUserInfo.title
+                    //头像
+                    if (shareUserInfo.userUrl != null) {
+                        $("#userUrl").css("background-image", "url(" + shareUserInfo.userUrl + ")");
+                        $('#headUrl').append('<img id="userUrl" style="min-height:3.08rem;margin-top: -0.06rem; height:3.08rem !important" src=' + shareUserInfo.userUrl + ' alt="">')
+                        $('#imgUrls').append('<img id="userUrl"  src=' + shareUserInfo.userUrl + ' alt="">')
+                    } else {
+                        $("#userUrl").css("background-image", "url(" + shareUserInfo.userUrl + ")");
+                        $('#imgUrls').append('<img id="userUrl" class="user_head" src="./icon_my_head_default.png" alt="">')
+                        $('#headUrl').append('<img id="userUrl" style="min-height:3.08rem;margin-top: -0.06rem; height:3.08rem !important" src="./icon_my_head_default@3x.png" alt="">')
+                    }
+
+
+                    $('#tel').attr('href', 'tel:' + shareUserInfo.telephone);
+                    $("#title").html(shareUserInfo.title);//资讯标题
+                    $("#content").html(shareUserInfo.content);//资讯内容
+                    $("#readcount").html(shareUserInfo.readcount);//阅读数
+                    $("#commentcount").html(shareUserInfo.commentcount);//评论数
+                    $("#praise").html(shareUserInfo.praise);//点赞数
+                    $("#titles").html(shareUserInfo.title);//资讯标题
+                    $("#contents").html(shareUserInfo.content);//资讯内容
+                    document.title = shareUserInfo.title;
+                    $("meta[name='description']").attr('content', document.title);
+
+                    if (shareUserInfo.videoUrl != null && shareUserInfo.videoUrl != "" && shareUserInfo.videoUrl != undefined) {
+                        //视频封面图
+                        var url = shareUserInfo.logo;
+                        var str = "";
+                        if (url.indexOf(",") != -1) {
+                            str = url.split(",")[0];
+                        } else {
+                            str = shareUserInfo.logo;
+                        }
+                        $("#video").append('<video poster=' + str + ' controls="controls" src=' + shareUserInfo.videoUrl + ' width="100%" height="240" > </video>')//视频地址
+                        $("#videos").append('<video poster=' + str + ' controls="controls" src=' + shareUserInfo.videoUrl + ' width="100%" height="240" > </video>')//视频地址
+                    }
+                    if (shareUserInfo.readcount > 9999){
+                        $("#readcounts").html((shareUserInfo.readcount/10000).toFixed(2) + '万');
+                    }else{
+                        $("#readcounts").html(shareUserInfo.readcount);//阅读数
+                    }
+                    if (shareUserInfo.commentcount > 9999){
+                        $("#commentcounts").html((shareUserInfo.commentcount/10000).toFixed(2) + '万');
+                    }else{
+                        $("#commentcounts").html(shareUserInfo.commentcount);//评论数
+                    }
+                    if (shareUserInfo.praise > 9999){
+                        $("#praises").html((shareUserInfo.praise/10000).toFixed(2) + '万');
+                    }else{
+                        $("#praises").html(shareUserInfo.praise);//点赞数
+
+                }
+              
+            }
+            $("#htmlBody").append(htmlBodyEnd)
+
+                //雷达图
+                var list = data.data.list;
+                let indicator = []
+                console.log("list= ", list.shift())
+                console.log("list= ", list)
+                var arr = [];
+                // var max = Math.max.apply(null, arr);
+                // console.log(max, min)
+               for (var j = 0; j < list.length; j++){
+                    arr.push(list[j].num)
+               }
+               console.log("arr= ", arr)
+               var max = Math.max.apply(null, arr);
+               console.log("max= ", max)
+               if (max > 500){
+                    for (var j = 0; j < list.length; j++){
+                    list[j].max = max + 50
+                    }
+               }else if (max == 0){
+                    for (var j = 0; j < list.length; j++){
+                    list[j].max = max + 50
+                    }
+               }
+
+
+
+               console.log("max-list", list)
+
+                for (var i = 0; i < list.length; i++) {
+
+                    if (list[i].num > list[i].max) {
+                        indicator.push(list[i].max);
+                    } else {
+                        indicator.push(list[i].num);
+                    }
+
+
+                }
+                var myChart = echarts.init(document.getElementById('main'));
+                option = {
+                    title: {
+                        text: ''
+                    },
+                    color: {
+                        type: 'linear',
+                        x: 0,
+                        y: 0,
+                        x2: 0,
+                        y2: 1,
+                        colorStops: [{
+                            offset: 0, color: '#9D93DA' // 0% 处的颜色
+                        }, {
+                            offset: 1, color: '#9D93DA' // 100% 处的颜色
+                        }],
+                        globalCoord: false // 缺省为 false
+                    },
+                    tooltip: {
+                        trigger: 'axis'
+                    },
+                    legend: {
+                        left: 'center',
+                        data: []
+                    },
+                    radar: [
+                    {
+                        indicator: list,
+                        center: ['50%', '50%'],
+                        radius: 100
+                    },
+
+                    ],
+                    series: [
+                    {
+                        type: 'radar',
+                        tooltip: {
+                            trigger: 'item'
+                        },
+                        areaStyle: {},
+                        data: [
+                        {
+                            value: indicator,
+                            name: 'username',
+                                    /*label: {
+                                        show: true,
+                                        formatter: function(params) {
+                                            return params.value;
+                                        }
+                                    }*/
+                                }
+                                ]
+                            },
+
+                            ]
+                        };
+                        myChart.setOption(option);
+                    }
+                });
+}
+
+
+    //如果用户手机有安装该app，则直接打开app；否则就跳到应用市场下载
+    function btn() {
+        open()
+    }
+    //隐藏蒙层
+    function hide() {
+        document.getElementById('mengceng').style.display = 'none';
+    }
+
+    var flag = false;
+
+    function showHight() {
+        if (!flag) {
+            point.previousElementSibling.style.display = 'block';
+            point.style.transform = "rotate(" + "180deg" + ")";
+            flag = !flag;
+        } else {
+            point.previousElementSibling.style.display = '-webkit-box';
+            point.style.transform = "rotate(" + "0deg" + ")";
+            flag = !flag;
+        }
+    }
+
+    (function (doc, win) {
+        var docEl = doc.documentElement;
+        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
+        recalc = function () {
+            var clientWidth = docEl.clientWidth;
+            if (!clientWidth) return;
+            docEl.style.fontSize = 50 * (clientWidth / 375) + 'px';
+        };
+        if (!doc.addEventListener) return;
+        win.addEventListener(resizeEvt, recalc, false);
+        doc.addEventListener('DOMContentLoaded', recalc, false);
+    }(document, window));
+</script>
+
+</html>
