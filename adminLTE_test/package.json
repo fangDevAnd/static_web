@@ -16,7 +16,7 @@
     "admin-lte": "^3.0.1",
     "element-ui": "^2.13.0",
     "font-awesome": "^4.7.0",
-    "jquery": "^2.2.3",
+    "jquery": "^3.5.0",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1"
   },
